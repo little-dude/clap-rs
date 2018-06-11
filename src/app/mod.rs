@@ -1193,12 +1193,10 @@ impl<'a, 'b> App<'a, 'b> {
                     let i = io::stdin();
                     i.lock().read_line(&mut s).unwrap();
                 }
-                drop(self);
                 drop(e);
                 process::exit(1);
             }
 
-            drop(self);
             e.exit()
         })
     }
