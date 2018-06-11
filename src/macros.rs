@@ -959,30 +959,6 @@ macro_rules! custom_headings_mut {
     }
 }
 
-macro_rules! subcommands_cloned {
-    ($app:expr, $how:ident) => {
-        $app.subcommands.$how().cloned()
-    };
-    ($app:expr) => {
-        subcommands_cloned!($app, iter)
-    }
-}
-
-macro_rules! subcommands {
-    ($app:expr, $how:ident) => {
-        $app.subcommands.$how()
-    };
-    ($app:expr) => {
-        subcommands!($app, iter)
-    }
-}
-
-macro_rules! subcommands_mut {
-    ($app:expr) => {
-        subcommands!($app, iter_mut)
-    }
-}
-
 macro_rules! groups {
     ($app:expr, $how:ident) => {
         $app.groups.$how()
@@ -1050,15 +1026,13 @@ macro_rules! find_by_short {
 
 macro_rules! find_subcmd_cloned {
     ($_self:expr, $sc:expr) => {{
-        subcommands_cloned!($_self)
-            .find(|a| match_alias!(a, $sc, &*a.name))
+        $_self.subcommands.iter().cloned().find(|a| match_alias!(a, $sc, &*a.name))
     }};
 }
 
 macro_rules! find_subcmd {
     ($app:expr, $sc:expr) => {{
-        subcommands!($app)
-            .find(|a| match_alias!(a, $sc, &*a.name))
+        $app.subcommands.iter().find(|a| match_alias!(a, $sc, &*a.name))
     }};
 }
 

@@ -46,7 +46,7 @@ pub fn all_subcommand_names(p: &App) -> Vec<String> {
         .iter()
         .map(|&(ref n, _)| n.clone())
         .collect();
-    for sc_v in subcommands!(p).map(|s| all_subcommand_names(&s)) {
+    for sc_v in p.subcommands.iter().map(|s| all_subcommand_names(&s)) {
         subcmds.extend(sc_v);
     }
     subcmds.sort();
@@ -63,7 +63,7 @@ pub fn all_subcommand_names(p: &App) -> Vec<String> {
 pub fn all_subcommands(p: &App) -> Vec<(String, String)> {
     debugln!("all_subcommands;");
     let mut subcmds: Vec<_> = subcommands_of(p);
-    for sc_v in subcommands!(p).map(|s| all_subcommands(&s)) {
+    for sc_v in p.subcommands.iter().map(|s| all_subcommands(&s)) {
         subcmds.extend(sc_v);
     }
     subcmds
@@ -102,7 +102,7 @@ pub fn subcommands_of(p: &App) -> Vec<(String, String)> {
         }
         return ret;
     }
-    for sc in subcommands!(p) {
+    for sc in &p.subcommands {
         debugln!(
             "subcommands_of:iter: name={}, bin_name={}",
             sc.name,
@@ -142,7 +142,7 @@ pub fn get_all_subcommand_paths(p: &App, first: bool) -> Vec<String> {
         }
         return vec![];
     }
-    for sc in subcommands!(p) {
+    for sc in &p.subcommands {
         let name = &*sc.name;
         let path = sc.bin_name.as_ref().unwrap().clone().replace(" ", "__");
         subcmds.push(path.clone());
@@ -152,7 +152,7 @@ pub fn get_all_subcommand_paths(p: &App, first: bool) -> Vec<String> {
             }
         }
     }
-    for sc_v in subcommands!(p).map(|s| get_all_subcommand_paths(&s, false)) {
+    for sc_v in p.subcommands.iter().map(|s| get_all_subcommand_paths(&s, false)) {
         subcmds.extend(sc_v);
     }
     subcmds

@@ -109,7 +109,7 @@ fn generate_inner<'a, 'b, 'p>(
         }
     }
 
-    for subcommand in subcommands!(p) {
+    for subcommand in &p.subcommands {
         let data = &subcommand.name;
         let tooltip = get_tooltip(subcommand.about, data);
         completions.push_str(&preamble);

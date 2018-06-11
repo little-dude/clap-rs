@@ -845,7 +845,7 @@ where
             }
         }
         mid_string.push_str(" ");
-        if let Some(ref mut sc) = subcommands_mut!(self.app).find(|s| s.name == sc_name) {
+        if let Some(ref mut sc) = self.app.subcommands.iter_mut().find(|s| s.name == sc_name) {
             let mut sc_matcher = ArgMatcher::new();
             // bin_name should be parent's bin_name + [<reqs>] + the sc's name separated by
             // a space
@@ -944,9 +944,9 @@ where
 
         self.app.long_about.is_some()
             || args!(self.app).any(|f| should_long(&f))
-            || subcommands!(self.app).any(|s| s.long_about.is_some())
+            || self.app.subcommands.iter().any(|s| s.long_about.is_some())
     }
-    
+
 //    fn _help(&self, mut use_long: bool) -> ClapError {
 //        debugln!("Parser::_help: use_long={:?}", use_long && self.use_long_help());
 //        use_long = use_long && self.use_long_help();

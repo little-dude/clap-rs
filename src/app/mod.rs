@@ -1547,7 +1547,7 @@ impl<'a, 'b> App<'a, 'b> {
             self.settings.unset(AppSettings::NeedsLongVersion);
         }
         if self.has_subcommands() && !self.is_set(AppSettings::DisableHelpSubcommand)
-            && !subcommands!(self).any(|s| s.name == "help")
+            && !self.subcommands.iter().any(|s| s.name == "help")
         {
             debugln!("App::_create_help_and_version: Building help");
             self.subcommands.push(
@@ -1568,14 +1568,11 @@ impl<'a, 'b> App<'a, 'b> {
             {
                 a.disp_ord = i;
             }
-            for (i, sc) in &mut subcommands_mut!(self)
-                .enumerate()
-                .filter(|&(_, ref sc)| sc.disp_ord == 999)
-            {
+            for (i, sc) in self.subcommands.iter_mut().enumerate().filter(|&(_, ref sc)| sc.disp_ord == 999) {
                 sc.disp_ord = i;
             }
         }
-        for sc in subcommands_mut!(self) {
+        for sc in &mut self.subcommands {
             sc._derive_display_order();
         }
     }
@@ -1639,7 +1636,7 @@ impl<'a, 'b> App<'a, 'b> {
 
     fn _build_bin_names(&mut self) {
         debugln!("App::_build_bin_names;");
-        for sc in subcommands_mut!(self) {
+        for sc in &mut self.subcommands {
             debug!("Parser::build_bin_names:iter: bin_name set...");
             if sc.bin_name.is_none() {
                 sdebugln!("No");
@@ -1742,7 +1739,8 @@ impl<'a, 'b> App<'a, 'b> {
     }
 
     pub fn has_visible_subcommands(&self) -> bool {
-        subcommands!(self)
+        self.subcommands
+            .iter()
             .filter(|sc| sc.name != "help")
             .any(|sc| !sc.is_set(AppSettings::Hidden))
     }

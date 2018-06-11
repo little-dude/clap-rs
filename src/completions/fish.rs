@@ -77,7 +77,7 @@ fn gen_fish_inner(root_command: &str, comp_gen: &FishGen, subcommand: &str, buff
         buffer.push_str("\n");
     }
 
-    for subcommand in subcommands!(comp_gen.0) {
+    for subcommand in &comp_gen.0.subcommands {
         let mut template = basic_template.clone();
         template.push_str(" -f");
         template.push_str(format!(" -a \"{}\"", &subcommand.name).as_str());

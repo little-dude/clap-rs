@@ -157,7 +157,7 @@ fn subcommands_of(p: &App) -> String {
     }
 
     // The subcommands
-    for sc in subcommands!(p) {
+    for sc in &p.subcommands {
         debugln!("ZshGen::subcommands_of:iter: subcommand={}", sc.name);
         add_sc(sc, &sc.name, &mut ret);
         if let Some(ref v) = sc.aliases {
