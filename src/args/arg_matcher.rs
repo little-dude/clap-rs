@@ -137,8 +137,8 @@ impl<'a> ArgMatcher<'a> {
       });
       ma.indices.push(idx);
     }
-    
-    pub fn needs_more_vals<'b>(&self, o: &Arg) -> bool {
+
+    pub fn needs_more_vals(&self, o: &Arg) -> bool {
         debugln!("ArgMatcher::needs_more_vals: o={}", o.name);
         if let Some(ma) = self.get(o.name) {
             if let Some(num) = o.num_vals {
