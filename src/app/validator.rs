@@ -124,7 +124,7 @@ impl<'a, 'b, 'c, 'z> Validator<'a, 'b, 'c, 'z> {
                 debug!("Validator::validate_arg_values: checking validator...");
                 if let Err(e) = vtor(val.to_string_lossy().into_owned()) {
                     sdebugln!("error");
-                    return Err(Error::value_validation(Some(arg), e, self.0.app.color()));
+                    return Err(Error::value_validation(Some(arg), e.as_str(), self.0.app.color()));
                 } else {
                     sdebugln!("good");
                 }
@@ -135,7 +135,7 @@ impl<'a, 'b, 'c, 'z> Validator<'a, 'b, 'c, 'z> {
                     sdebugln!("error");
                     return Err(Error::value_validation(
                         Some(arg),
-                        (*e).to_string(),
+                        e.as_str(),
                         self.0.app.color(),
                     ));
                 } else {
@@ -487,7 +487,7 @@ impl<'a, 'b, 'c, 'z> Validator<'a, 'b, 'c, 'z> {
         extra: Option<&str>,
     ) -> ClapResult<()> {
         debugln!("Validator::missing_required_error: extra={:?}", extra);
-        let c = Colorizer::new(ColorizerOption {
+        let c = Colorizer::new(&ColorizerOption {
             use_stderr: true,
             when: self.0.app.color(),
         });

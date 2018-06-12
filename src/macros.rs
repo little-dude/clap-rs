@@ -68,7 +68,7 @@ macro_rules! value_t {
                 Ok(val) => Ok(val),
                 Err(_)  =>
                     Err(::clap::Error::value_validation_auto(
-                        format!("The argument '{}' isn't a valid value", v))),
+                        &format!("The argument '{}' isn't a valid value", v))),
             }
         } else {
             Err(::clap::Error::argument_not_found_auto($v))
@@ -113,7 +113,7 @@ macro_rules! value_t_or_exit {
                 Ok(val) => val,
                 Err(_)  =>
                     ::clap::Error::value_validation_auto(
-                        format!("The argument '{}' isn't a valid value", v)).exit(),
+                        &format!("The argument '{}' isn't a valid value", v)).exit(),
             }
         } else {
             ::clap::Error::argument_not_found_auto($v).exit()
@@ -164,7 +164,7 @@ macro_rules! values_t {
                     Ok(rv) => tmp.push(rv),
                     Err(..) => {
                         err = Some(::clap::Error::value_validation_auto(
-                                format!("The argument '{}' isn't a valid value", pv)));
+                                &format!("The argument '{}' isn't a valid value", pv)));
                         break
                     }
                 }
@@ -220,7 +220,7 @@ macro_rules! values_t_or_exit {
         if let Some(vals) = $m.values_of($v) {
             vals.map(|v| v.parse::<$t>().unwrap_or_else(|_|{
                 ::clap::Error::value_validation_auto(
-                    format!("One or more arguments aren't valid values")).exit()
+                    &format!("One or more arguments aren't valid values")).exit()
             })).collect::<Vec<$t>>()
         } else {
             ::clap::Error::argument_not_found_auto($v).exit()
