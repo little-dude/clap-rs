@@ -250,7 +250,7 @@ fn parser_of<'a, 'b>(p: &'b App<'a, 'b>, mut sc: &str) -> &'b App<'a, 'b> {
     if sc == p.bin_name.as_ref().unwrap_or(&String::new()) {
         return p;
     }
-    sc = sc.split(" ").last().unwrap();
+    sc = sc.split(' ').last().unwrap();
     find_subcmd!(p, sc).expect(INTERNAL_ERROR_MSG)
 }
 
