@@ -116,7 +116,7 @@ complete -F _{name} -o bashdefault -o default {name}
                 subcmd_dets,
                 subcmd = sc.replace("-", "__"),
                 sc_opts = self.all_options_for_path(&*sc),
-                level = sc.split("__").map(|_| 1).fold(0, |acc, n| acc + n),
+                level = sc.split("__").map(|_| 1).sum::<usize>(),
                 opts_details = self.option_details_for_path(&*sc)
             );
         }
