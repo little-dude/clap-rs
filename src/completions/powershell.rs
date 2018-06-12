@@ -57,7 +57,7 @@ Register-ArgumentCompleter -Native -CommandName '{bin_name}' -ScriptBlock {{
 // Escape string inside single quotes
 fn escape_string(string: &str) -> String { string.replace("'", "''") }
 
-fn get_tooltip<T : ToString>(help: Option<&str>, data: T) -> String {
+fn get_tooltip<T : ToString>(help: Option<&str>, data: &T) -> String {
     match help {
         Some(help) => escape_string(&help),
         _ => data.to_string()
@@ -80,13 +80,13 @@ fn generate_inner<'a, 'b, 'p>(
     let preamble = String::from("\n            [CompletionResult]::new(");
 
     for option in opts!(p) {
-        if let Some(data) = option.short {
+        if let Some(ref data) = option.short {
             let tooltip = get_tooltip(option.help, data);
             completions.push_str(&preamble);
             completions.push_str(format!("'-{}', '{}', {}, '{}')",
                                          data, data, "[CompletionResultType]::ParameterName", tooltip).as_str());
         }
-        if let Some(data) = option.long {
+        if let Some(ref data) = option.long {
             let tooltip = get_tooltip(option.help, data);
             completions.push_str(&preamble);
             completions.push_str(format!("'--{}', '{}', {}, '{}')",
@@ -95,13 +95,13 @@ fn generate_inner<'a, 'b, 'p>(
     }
 
     for flag in flags!(p) {
-        if let Some(data) = flag.short {
+        if let Some(ref data) = flag.short {
             let tooltip = get_tooltip(flag.help, data);
             completions.push_str(&preamble);
             completions.push_str(format!("'-{}', '{}', {}, '{}')",
                                          data, data, "[CompletionResultType]::ParameterName", tooltip).as_str());
         }
-        if let Some(data) = flag.long {
+        if let Some(ref data) = flag.long {
             let tooltip = get_tooltip(flag.help, data);
             completions.push_str(&preamble);
             completions.push_str(format!("'--{}', '{}', {}, '{}')",
